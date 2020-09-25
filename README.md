@@ -5,14 +5,16 @@ Welcome to Lorena Bucurú repository, this repo is made-up by two directories, i
 
 <table class="egt">
   <tr>
-    <th colspan="3">Homework</th>
+    <th colspan="4">Homework</th>
   </tr>
   <tr>
+    <th>No</th>
     <th>Topic</th>
     <th>Path</th>
     <th>Filetype</th>
   </tr>
   <tr>
+    <td>1</td>
     <td>Tracks_Clusters</td>
     <td>/Homework/Tracks-Clusters/Tarea1.ipynb</td>
     <td>Notebook</td>
@@ -21,14 +23,16 @@ Welcome to Lorena Bucurú repository, this repo is made-up by two directories, i
 
 <table class="egt">
   <tr>
-    <th colspan="3">Examples</th>
+    <th colspan="4">Examples</th>
   </tr>
   <tr>
+    <th>No</th>
     <th>Topic</th>
     <th>Path</th>
     <th>Filetype</th>
   </tr>
   <tr>
+    <td>1</td>
     <td>Tracks_Clusters</td>
     <td>/Examples/Example1/Tracks_Clusters_cpp.ipynb</td>
     <td>Notebook</td>
