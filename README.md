@@ -1,4 +1,4 @@
-##Documentation
+## Documentation
 
 Welcome to Lorena Bucurú repository, this repo is made-up by two directories, in the first one, all examples given in class are there, while in the other directory are all the homework. These tasks are separated by directories named as the topics worked in class. For example, the topic "Tracks and Clusters" has its respective homework in /Homework/Tracks-Clusters/Tarea1.ipynb.
 
