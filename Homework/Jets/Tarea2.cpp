@@ -318,12 +318,6 @@ void Tarea2() {
   TH1F *hist_leadreco_pt_cut = new TH1F("Lead Reco-jet (cut)",
   "Leading jet pT; pT (GeV); Events", 50, 0, 200);
 
-  TH1F *hist_leadtruth_pt_cut = new TH1F("Lead Truth-jet (cut)",
-  "Leading jet pT; pT (GeV); Events", 50, 0, 200);
-
-  TH1F *hist_leadtrack_pt_cut = new TH1F("Lead Track-jet (cut)",
-  "Leading jet pT; pT (GeV); Events", 50, 0, 200);
-
   // Sin el corte
 
   TH1F *hist_leadreco1_pt = new TH1F("Lead Reco-jet compare",
@@ -347,17 +341,11 @@ void Tarea2() {
 
       if(std::abs(reco_R4_jvf->at(0)) > 0.5){
         hist_leadreco_pt_cut->Fill(reco_R4_pt->at(0)/1000., evtw);
-        hist_leadtruth_pt_cut->Fill(truth_R4_pt->at(0)/1000., evtw);
       }
     }
 
     if(track_R4_pt->size()!=0){
       hist_leadtrack_pt->Fill(track_R4_pt->at(0)/1000., evtw);
-
-      if(reco_R4_pt->size()!=0 &&
-      std::abs(reco_R4_jvf->at(0)) > 0.5){
-        hist_leadtrack_pt_cut->Fill(track_R4_pt->at(0)/1000., evtw);
-      }
     }
   }
 
@@ -368,10 +356,6 @@ void Tarea2() {
   hist_leadreco_pt_cut->SetMarkerStyle(20);
   hist_leadreco_pt_cut->SetMarkerColor(kRed);
   hist_leadreco_pt_cut->Draw("");
-
-  hist_leadtruth_pt_cut->SetMarkerStyle(20);
-  hist_leadtruth_pt_cut->SetMarkerColor(kBlue);
-  hist_leadtruth_pt_cut->Draw("Same");
 
   // Dibujamos los histogramas sin el corte
   hist_leadreco1_pt->SetMarkerStyle(20);
@@ -392,10 +376,6 @@ void Tarea2() {
   hist_leadreco_pt_cut->SetMarkerColor(kRed);
   hist_leadreco_pt_cut->Draw("");
 
-  hist_leadtrack_pt_cut->SetMarkerStyle(20);
-  hist_leadtrack_pt_cut->SetMarkerColor(kBlue);
-  hist_leadtrack_pt_cut->Draw("Same");
-
   // Dibujamos los histogramas sin el corte
   hist_leadreco1_pt->SetMarkerStyle(20);
   hist_leadreco1_pt->SetMarkerColor(kOrange);
@@ -413,96 +393,390 @@ void Tarea2() {
     jets y los tracks jets. Usaremos la distancia DeltaR entre los dos,
     pero primero debemos definirlos como cuatro vectores:*/
 
-    vector<float> *reco_R4_eta = {};
-    vector<float> *reco_R4_phi;
-    vector<float> *reco_R4_m;
+  vector<float> *reco_R4_eta = {};
+  vector<float> *reco_R4_phi = {};
+  vector<float> *reco_R4_m = {};
 
-    vector<float> *truth_R4_eta;
-    vector<float> *truth_R4_phi;
-    vector<float> *truth_R4_m;
+  vector<float> *truth_R4_eta = {};
+  vector<float> *truth_R4_phi = {};
+  vector<float> *truth_R4_m = {};
 
-    vector<float> *track_R4_eta;
-    vector<float> *track_R4_phi;
-    vector<float> *track_R4_m;
+  vector<float> *track_R4_eta = {};
+  vector<float> *track_R4_phi = {};
+  vector<float> *track_R4_m = {};
 
-    tree->SetBranchAddress("RecoJets_R4_eta", &reco_R4_eta);
-    tree->SetBranchAddress("RecoJets_R4_phi", &reco_R4_phi);
-    tree->SetBranchAddress("RecoJets_R4_m", &reco_R4_m);
-    tree->SetBranchAddress("TruthJets_R4_eta", &truth_R4_eta);
-    tree->SetBranchAddress("TruthJets_R4_phi", &truth_R4_phi);
-    tree->SetBranchAddress("TruthJets_R4_m", &truth_R4_m);
-    tree->SetBranchAddress("TrackJets_R4_eta", &track_R4_eta);
-    tree->SetBranchAddress("TrackJets_R4_phi", &track_R4_phi);
-    tree->SetBranchAddress("TrackJets_R4_m", &track_R4_m);
+  tree->SetBranchAddress("RecoJets_R4_eta", &reco_R4_eta);
+  tree->SetBranchAddress("RecoJets_R4_phi", &reco_R4_phi);
+  tree->SetBranchAddress("RecoJets_R4_m", &reco_R4_m);
 
-    /* Creamos los histogramas en donde se van a comparar los tres casos: RecoJet
-    con y sin corte y track-jets, ademas de truth - track*/
+  tree->SetBranchAddress("TruthJets_R4_eta", &truth_R4_eta);
+  tree->SetBranchAddress("TruthJets_R4_phi", &truth_R4_phi);
+  tree->SetBranchAddress("TruthJets_R4_m", &truth_R4_m);
 
-    TH1F *hist_DR_reco_track_cut = new TH1F("Delta R reco-track cut",
-    "Delta R; #Delta R; Events",20,0,2);
+  tree->SetBranchAddress("TrackJets_R4_eta", &track_R4_eta);
+  tree->SetBranchAddress("TrackJets_R4_phi", &track_R4_phi);
+  tree->SetBranchAddress("TrackJets_R4_m", &track_R4_m);
 
-    TH1F *hist_DR_reco_track = new TH1F("Delta R reco-track",
-    "Delta R; #Delta R; Events",20,0,2);
+  /* Creamos los histogramas en donde se van a comparar los tres casos: RecoJet
+  con y sin corte y track-jets, ademas de truth - track*/
 
-    TH1F *hist_DR_track_truth = new TH1F("Delta R track-truth",
-    "Delta R; #Delta R; Events",20,0,2);
+  TH1F *hist_DR_reco_track_cut = new TH1F("Delta R reco-track cut",
+  "Delta R; #Delta R; Events",20,0,2);
 
-    // Llenamos los histogramas
+  TH1F *hist_DR_reco_track = new TH1F("Delta R reco-track",
+  "Delta R; #Delta R; Events",20,0,2);
 
-    nentries = (Int_t)tree->GetEntries();
+  TH1F *hist_DR_track_truth = new TH1F("Delta R track-truth",
+  "Delta R; #Delta R; Events",20,0,2);
 
-    for (int i = 0; i < nentries; i++)
-    {
+  // Llenamos los histogramas
+
+  nentries = (Int_t)tree->GetEntries();
+
+  for (int i = 0; i < nentries; i++)
+  {
+    nbytes = tree->GetEntry(i);
+
+    // Reco track con corte
+    if(track_R4_pt->size()!=0 && track_R4_pt->at(0)>20000.){
+      TLorentzVector trackJet;
+      trackJet.SetPtEtaPhiM(track_R4_pt->at(0),track_R4_eta->at(0),
+      track_R4_phi->at(0),track_R4_m->at(0));
+
+      if(reco_R4_pt->size()!=0 && fabs(reco_R4_jvf->at(0))>0.5){
+        TLorentzVector recoJet;
+        recoJet.SetPtEtaPhiM(reco_R4_pt->at(0),reco_R4_eta->at(0),
+        reco_R4_phi->at(0),reco_R4_m->at(0));
+
+        //Plot the Delta R
+        hist_DR_reco_track_cut->Fill(trackJet.DeltaR(recoJet),evtw);
+      }
+    }
+
+    // Reco track sin corte
+    if(track_R4_pt->size()!=0 && track_R4_pt->at(0)>20000.){
+      TLorentzVector trackJet1;
+      trackJet1.SetPtEtaPhiM(track_R4_pt->at(0),track_R4_eta->at(0),
+      track_R4_phi->at(0),track_R4_m->at(0));
+
+      if(reco_R4_pt->size()!=0){
+        TLorentzVector recoJet1;
+        recoJet1.SetPtEtaPhiM(reco_R4_pt->at(0),reco_R4_eta->at(0),
+        reco_R4_phi->at(0),reco_R4_m->at(0));
+
+        //Plot the Delta R
+        hist_DR_reco_track->Fill(trackJet1.DeltaR(recoJet1),evtw);
+      }
+    }
+
+    if(truth_R4_pt->size()!=0 && truth_R4_pt->at(0)>20000.){
+      TLorentzVector truthJet;
+      truthJet.SetPtEtaPhiM(truth_R4_pt->at(0),truth_R4_eta->at(0),
+      truth_R4_phi->at(0),truth_R4_m->at(0));
+
+      if(track_R4_pt->size()!=0 && track_R4_pt->at(0)>20000.){
+        TLorentzVector trackJet2;
+        trackJet2.SetPtEtaPhiM(track_R4_pt->at(0),track_R4_eta->at(0),
+        track_R4_phi->at(0),track_R4_m->at(0));
+
+        //Plot the Delta R
+        hist_DR_track_truth->Fill(truthJet.DeltaR(trackJet2),evtw);
+      }
+    }
+  }
+
+  std::cout << "Done!" << std::endl;
+
+  hist_DR_reco_track_cut->Scale(1/hist_DR_reco_track_cut->Integral());
+  hist_DR_reco_track_cut->SetMarkerStyle(20);
+  hist_DR_reco_track_cut->SetMarkerColor(kOrange);
+
+  hist_DR_reco_track->Scale(1/hist_DR_reco_track->Integral());
+  hist_DR_reco_track->SetMarkerStyle(20);
+  hist_DR_reco_track->SetMarkerColor(kPink);
+
+  hist_DR_track_truth->Scale(1/hist_DR_track_truth->Integral());
+  hist_DR_track_truth->SetMarkerStyle(20);
+  hist_DR_track_truth->SetMarkerColor(kBlue);
+
+  hist_DR_reco_track_cut->DrawNormalized("");
+  hist_DR_reco_track->DrawNormalized("Same");
+  hist_DR_track_truth->DrawNormalized("Same");
+
+  canvas->Print("DeltaR.svg");
+  canvas->Clear();
+
+  /* Graficaremos la respuesta para "jets que coinciden (matched jets)"
+  (usando Delta<R3), tambien graficaremos pTjet/pTruth para tres casos:
+  truth_pT>20 GeV, 100 GeV, 500 GeV. hacemos esto para track jets y reco
+  jets (two plots)*/
+
+  TH1F *hist_match_reco_truth_20 = new TH1F("Matched Delta R [reco] > 20 GeV",
+    "Matched Delta R; pTjet/pTtruth; Events",20,0,5);
+
+  TH1F *hist_match_reco_truth_100 = new TH1F(
+    "Matched Delta R [reco] > 100 GeV","Matched Delta R; pTjet/pTtruth; Events",
+    20,0,5);
+
+  TH1F *hist_match_reco_truth_500 = new TH1F(
+    "Matched Delta R [reco] > 500 GeV","Matched Delta R; pTjet/pTtruth; Events",
+    20,0,5);
+
+  TH1F *hist_match_track_truth_20 = new TH1F(
+    "Matched Delta R [track] > 20 GeV","Matched Delta R; pTjet/pTtruth; Events",
+    20,0,5);
+
+  TH1F *hist_match_track_truth_100 = new TH1F(
+    "Matched Delta R [track] > 100 GeV",
+    "Matched Delta R; pTjet/pTtruth; Events",20,0,5);
+
+  TH1F *hist_match_track_truth_500 = new TH1F(
+    "Matched Delta R [track] > 500 GeV",
+    "Matched Delta R; pTjet/pTtruth; Events",20,0,5);
+
+    for(int i = 0; i < nentries; i++) {
       nbytes = tree->GetEntry(i);
 
-      // Reco track con corte
-      if(track_R4_pt->size()!=0 && track_R4_pt->at(0)>20000.){
-        TLorentzVector trackJet;
-        trackJet.SetPtEtaPhiM(track_R4_pt->at(0),track_R4_eta->at(0),
-        track_R4_phi->at(0),track_R4_m->at(0));
-
-        if(reco_R4_pt->size()!=0 && fabs(reco_R4_jvf->at(0))>0.5){
-          TLorentzVector recoJet;
-          recoJet.SetPtEtaPhiM(reco_R4_pt->at(0),reco_R4_eta->at(0),
-          reco_R4_phi->at(0),reco_R4_m->at(0));
-
-          //Plot the Delta R
-          hist_DR_reco_track_cut->Fill(trackJet.DeltaR(recoJet),evtw);
-        }
-      }
-
-      // Reco track sin corte
-      if(track_R4_pt->size()!=0 && track_R4_pt->at(0)>20000.){
-        TLorentzVector trackJet1;
-        trackJet1.SetPtEtaPhiM(track_R4_pt->at(0),track_R4_eta->at(0),
-        track_R4_phi->at(0),track_R4_m->at(0));
-
-        if(reco_R4_pt->size()!=0){
-          TLorentzVector recoJet1;
-          recoJet1.SetPtEtaPhiM(reco_R4_pt->at(0),reco_R4_eta->at(0),
-          reco_R4_phi->at(0),reco_R4_m->at(0));
-
-          //Plot the Delta R
-          hist_DR_reco_track->Fill(trackJet1.DeltaR(recoJet1),evtw);
-        }
-      }
-
-      if(truth_R4_pt->size()!=0 && truth_R4_pt->at(0)>20000.){
+      if(truth_R4_pt->size()!=0){
         TLorentzVector truthJet;
         truthJet.SetPtEtaPhiM(truth_R4_pt->at(0),truth_R4_eta->at(0),
         truth_R4_phi->at(0),truth_R4_m->at(0));
 
-        if(track_R4_pt->size()!=0 && track_R4_pt->at(0)>20000.){
-          TLorentzVector trackJet2;
-          trackJet2.SetPtEtaPhiM(track_R4_pt->at(0),track_R4_eta->at(0),
+        if(reco_R4_pt->size() != 0){
+          TLorentzVector recoJet;
+          recoJet.SetPtEtaPhiM(reco_R4_pt->at(0),reco_R4_eta->at(0),
+          reco_R4_phi->at(0),reco_R4_m->at(0));
+
+        if (truthJet.DeltaR(recoJet) < 0.3) {
+          if (truth_R4_pt->at(0) > 20000.) {
+            hist_match_reco_truth_20->Fill(
+              reco_R4_pt->at(0) / truth_R4_pt->at(0),evtw);
+            }
+
+          if (truth_R4_pt->at(0) > 100000.) {
+              hist_match_reco_truth_100->Fill(
+                reco_R4_pt->at(0) / truth_R4_pt->at(0),evtw);
+            }
+
+          if (truth_R4_pt->at(0) > 500000.) {
+              hist_match_reco_truth_500->Fill(
+                reco_R4_pt->at(0) / truth_R4_pt->at(0),evtw);
+            }
+          }
+        }
+
+
+        if(track_R4_pt->size() != 0){
+          TLorentzVector trackJet;
+          trackJet.SetPtEtaPhiM(track_R4_pt->at(0),track_R4_eta->at(0),
           track_R4_phi->at(0),track_R4_m->at(0));
 
           //Plot the Delta R
-          hist_DR_track_truth->Fill(truthJet.DeltaR(trackJet2),evtw);
+          if (truthJet.DeltaR(trackJet) < 0.3) {
+            if (truth_R4_pt->at(0)>20000.) {
+              hist_match_track_truth_20->Fill(
+                track_R4_pt->at(0) / truth_R4_pt->at(0),evtw);
+            }
+
+            if (truth_R4_pt->at(0)>100000.) {
+              hist_match_track_truth_100->Fill(
+                track_R4_pt->at(0) / truth_R4_pt->at(0),evtw);
+            }
+
+            if (truth_R4_pt->at(0)>500000.) {
+              hist_match_track_truth_500->Fill(
+                track_R4_pt->at(0) / truth_R4_pt->at(0),evtw);
+            }
+          }
         }
+
       }
     }
 
-    std::cout << "Done!" << std::endl;
+  std::cout << "Done matched jets" << std::endl;
 
+  hist_match_reco_truth_20->SetMarkerStyle(20);
+  hist_match_reco_truth_20->SetMarkerColor(kRed);
+  hist_match_reco_truth_20->Draw("");
+
+  hist_match_reco_truth_100->SetMarkerStyle(21);
+  hist_match_reco_truth_100->SetMarkerColor(kBlue);
+  hist_match_reco_truth_100->Draw("Same");
+
+  hist_match_reco_truth_500->SetMarkerStyle(22);
+  hist_match_reco_truth_500->SetMarkerColor(kOrange);
+  hist_match_reco_truth_500->Draw("Same");
+  canvas->SetLogy(false);
+  canvas->Print("Match_reco_truth.svg");
+  canvas->Clear();
+
+  hist_match_track_truth_20->SetMarkerStyle(20);
+  hist_match_track_truth_20->SetMarkerColor(kRed);
+  hist_match_track_truth_20->Draw("");
+
+  hist_match_track_truth_100->SetMarkerStyle(21);
+  hist_match_track_truth_100->SetMarkerColor(kBlue);
+  hist_match_track_truth_100->Draw("Same");
+
+  hist_match_track_truth_500->SetMarkerStyle(22);
+  hist_match_track_truth_500->SetMarkerColor(kOrange);
+  hist_match_track_truth_500->Draw("Same");
+  canvas->Print("Match_track_truth.svg");
+  canvas->Clear();
+
+  //Por último, vamos a investigar los Large-R jets
+
+  // Graficaremos el leading jet pt para reco_R10 y reco_R10_Trimmed jets
+  // Tambien el leading jet pt para truth_R10 y truth_R10_Trimmed jets
+
+  vector<float> *reco_R10_pt = {};
+  vector<float> *reco_R10_trimmed = {};
+  vector<float> *truth_R10_pt = {};
+  vector<float> *truth_R10_trimmed = {};
+
+
+  tree->SetBranchAddress("RecoJets_R10_pt", &reco_R10_pt);
+  tree->SetBranchAddress("RecoJets_R10_Trimmed_pt", &reco_R10_trimmed);
+  tree->SetBranchAddress("TruthJets_R10_pt", &truth_R10_pt);
+  tree->SetBranchAddress("TruthJets_R10_Trimmed_pt", &truth_R10_trimmed);
+
+  // Creamos los histogramas para leadreco_R10 y leadreco_R10_Trimmed jets
+  TH1F *hist_leadreco_R10_pt = new TH1F("Lead RecoJets_R10_pt",
+  "Leading jet pT;pT(GeV);Events",50,10,200);
+
+  TH1F *hist_leadtrimm_R10_pt = new TH1F("Lead RecoJets_Trimmed_R10_pt",
+  "Leading jet pT;pT(GeV);Events",50,10,200);
+
+  TH1F *hist_leadtruth_R10_pt = new TH1F("Lead Truthets_R10_pt",
+  "Leading jet pT;pT(GeV);Events",50,10,200);
+
+  TH1F *hist_Tleadtrimm_R10_pt = new TH1F("LeadTruthJets_Trimmed_R10_pt",
+  "Leading jet pT;pT(GeV);Events",50,10,200);
+
+
+  // Llenamos los histogramas de los RecoJets
+  nentries = (Int_t)tree->GetEntries();
+
+  for (int i = 0; i < nentries; i++) {
+    nbytes = tree->GetEntry(i);
+
+    if(reco_R10_pt->size()>0){
+      hist_leadreco_R10_pt->Fill(reco_R10_pt->at(0)/1000.,evtw);
+      }
+
+    if(reco_R10_trimmed->size()>0){
+      hist_leadtrimm_R10_pt->Fill(reco_R10_trimmed->at(0)/1000.,evtw);
+      }
+
+    if(truth_R10_pt->size()>0){
+      hist_leadtruth_R10_pt->Fill(truth_R10_pt->at(0)/1000.,evtw);
+    }
+
+    if(truth_R10_trimmed->size()>0){
+      hist_Tleadtrimm_R10_pt->Fill(truth_R10_trimmed->at(0)/1000.,evtw);
+    }
+
+
+    }
+
+  std::cout << "Done!" << std::endl;
+
+  // Dibujamos y guardamos el histograma, este se va a llamar
+  // "Leadreco_R10_AndTrimmed.svg"
+  hist_leadreco_R10_pt->SetMarkerStyle(20);
+  hist_leadreco_R10_pt->SetMarkerColor(kRed);
+  hist_leadreco_R10_pt->Draw("");
+  hist_leadtrimm_R10_pt->SetMarkerStyle(21);
+  hist_leadtrimm_R10_pt->Draw("same");
+  canvas->SetLogy();
+  canvas->Print("Leadreco_R10_AndTrimmed.svg");
+  canvas->Clear();
+
+  // Dibujamos y guardamos el histograma, este se va a llamar
+  // "Leadtruth_R10_AndTrimmed.svg"
+  hist_leadtruth_R10_pt->SetMarkerStyle(20);
+  hist_leadtruth_R10_pt->SetMarkerColor(kRed);
+  hist_leadtruth_R10_pt->Draw("");
+  hist_Tleadtrimm_R10_pt->SetMarkerStyle(21);
+  hist_Tleadtrimm_R10_pt->Draw("same");
+  canvas->Print("Leadtruth_R10_AndTrimmed.svg");
+  canvas->Clear();
+
+  /* Al comparar las graficas "Leadreco_R10_AndTrimmed.svg" y
+    "Leadtruth_R10_AndTrimmed.svg", se puede observar que */
+
+  // Graficaremos el leading jet m para reco_R10 y reco_R10_Trimmed jets
+  // Tambien el leading jet m para truth_R10 y truth_R10_Trimmed jets
+
+  vector<float> *reco_R10_m = {};
+  vector<float> *reco_R10_trimmed_m = {};
+  vector<float> *truth_R10_m = {};
+  vector<float> *truth_R10_trimmed_m = {};
+
+
+  tree->SetBranchAddress("RecoJets_R10_m", &reco_R10_m);
+  tree->SetBranchAddress("RecoJets_R10_Trimmed_m", &reco_R10_trimmed_m);
+  tree->SetBranchAddress("TruthJets_R10_m", &truth_R10_m);
+  tree->SetBranchAddress("TruthJets_R10_Trimmed_m", &truth_R10_trimmed_m);
+
+  // Creamos los histogramas para leadreco_R10 y leadreco_R10_Trimmed jets
+  TH1F *hist_leadreco_R10_m = new TH1F("Lead RecoJets_R10_m",
+  "Leading jet m;m(GeV);Events",20,10,1400);
+
+  TH1F *hist_leadtrimm_R10_m = new TH1F("Lead RecoJets_Trimmed_R10_m",
+  "Leading jet m;m(GeV);Events",20,10,1400);
+
+  TH1F *hist_leadtruth_R10_m = new TH1F("Lead Truthets_R10_m",
+  "Leading jet m;m(GeV);Events",20,10,1400);
+
+  TH1F *hist_Tleadtrimm_R10_m = new TH1F("LeadTruthJets_Trimmed_R10_m",
+  "Leading jet m;m(GeV);Events",20,10,1400);
+
+
+  // Llenamos los histogramas de los RecoJets
+  nentries = (Int_t)tree->GetEntries();
+
+  for (int i = 0; i < nentries; i++) {
+    nbytes = tree->GetEntry(i);
+
+    if(reco_R10_m->size()>0){
+      hist_leadreco_R10_m->Fill(reco_R10_m->at(0)/1000.,evtw);
+    }
+
+    if(reco_R10_trimmed_m->size()>0){
+      hist_leadtrimm_R10_m->Fill(reco_R10_trimmed_m->at(0)/1000.,evtw);
+    }
+
+    if(truth_R10_m->size()>0){
+      hist_leadtruth_R10_m->Fill(truth_R10_m->at(0)/1000.,evtw);
+    }
+
+    if(truth_R10_trimmed_m->size()>0){
+      hist_Tleadtrimm_R10_m->Fill(truth_R10_trimmed_m->at(0)/1000.,evtw);
+    }
+
+
+  }
+
+  std::cout << "Done!" << std::endl;
+
+  // Dibujamos y guardamos el histograma, este se va a llamar
+  // "Leadreco_R10_AndTrimmed.svg"
+  hist_leadreco_R10_m->SetMarkerStyle(20);
+  hist_leadreco_R10_m->SetMarkerColor(kRed);
+  hist_leadreco_R10_m->Draw("");
+  hist_leadtrimm_R10_m->SetMarkerStyle(21);
+  hist_leadtrimm_R10_m->Draw("same");
+  canvas->Print("Leadreco_R10_AndTrimmed_m.svg");
+  canvas->Clear();
+
+  // Dibujamos y guardamos el histograma, este se va a llamar
+  // "Leadtruth_R10_AndTrimmed.svg"
+  hist_leadtruth_R10_m->SetMarkerStyle(20);
+  hist_leadtruth_R10_m->SetMarkerColor(kRed);
+  hist_leadtruth_R10_m->Draw("");
+  hist_Tleadtrimm_R10_m->SetMarkerStyle(21);
+  hist_Tleadtrimm_R10_m->Draw("same");
+  canvas->Print("Leadtruth_R10_AndTrimmed_m.svg");
+  canvas->Clear();
 }
