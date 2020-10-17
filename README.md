@@ -19,6 +19,18 @@ Welcome to Lorena Bucurú repository, this repo is made-up by two directories, i
     <td>/Homework/Tracks-Clusters/Tarea1.ipynb</td>
     <td>Notebook</td>
   </tr>
+  <tr>
+    <td>2</td>
+    <td>Jets</td>
+    <td>/Homework/Jets/Tarea2.cpp</td>
+    <td>Macro</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>TTbar selection</td>
+    <td>/Homework/TTBar/Tarea3.ipynb</td>
+    <td>Notebook</td>
+  </tr>
 </table>
 
 <table class="egt">
@@ -35,6 +47,18 @@ Welcome to Lorena Bucurú repository, this repo is made-up by two directories, i
     <td>1</td>
     <td>Tracks_Clusters</td>
     <td>/Examples/Example1/Tracks_Clusters_cpp.ipynb</td>
+    <td>Notebook</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>TJets</td>
+    <td>/Examples/Example2/Jets_cpp.ipynb</td>
+    <td>Notebook</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>TTbar selection</td>
+    <td>/Examples/Example3/TTbarSel_8TeV.ipynb</td>
     <td>Notebook</td>
   </tr>
 </table>
