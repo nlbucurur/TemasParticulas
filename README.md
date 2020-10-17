@@ -22,8 +22,14 @@ Welcome to Lorena Bucurú repository, this repo is made-up by two directories, i
   <tr>
     <td>2</td>
     <td>Jets</td>
-    <td>/Homework/Jets/Tarea2.ipynb</td>
+    <td>/Homework/Jets/Tarea2.cpp</td>
     <td>Macro</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>TTbar selection</td>
+    <td>/Homework/TTBar/Tarea3.ipynb</td>
+    <td>Notebook</td>
   </tr>
 </table>
 
@@ -47,6 +53,12 @@ Welcome to Lorena Bucurú repository, this repo is made-up by two directories, i
     <td>2</td>
     <td>TJets</td>
     <td>/Examples/Example2/Jets_cpp.ipynb</td>
+    <td>Notebook</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>TTbar selection</td>
+    <td>/Examples/Example3/TTbarSel_8TeV.ipynb</td>
     <td>Notebook</td>
   </tr>
 </table>
