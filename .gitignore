@@ -1,1 +1,14 @@
 *.root
+*.aux
+*.bbl
+*.blg
+*.log
+*.synctex*
+*.fls
+*.fdb_latexmk
+*.out
+*.bcf
+*.run.xml
+*.toc
+*.nav
+*.snm
