@@ -1,0 +1,149 @@
+\documentclass{article}
+\usepackage[spanish,es-nodecimaldot,es-tabla]{babel}
+
+\usepackage{vmargin}
+\setmarginsrb{20mm}{10mm}{20mm}{10mm}{12pt}{11mm}{0mm}{11mm}
+\usepackage{fontspec}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{csquotes}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{cancel}
+\usepackage[per-mode=fraction]{siunitx}
+\usepackage{biblatex}
+\addbibresource{biblio.bib}
+\usetikzlibrary{calc,patterns,angles,quotes}
+
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+
+% Custom colors
+\usepackage{color}
+\definecolor{deepblue}{rgb}{0.5,0.5,1}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\definecolor{comment}{rgb}{0,0.5,0.5}
+
+%Python synthax highligh
+\lstset{
+language=Python,
+basicstyle=\ttm,
+numbers=left,
+numberstyle=\tiny,
+otherkeywords={self, as, True, False},             % Add keywords here
+keywordstyle=\ttb\color{deepblue},
+emph={MyClass,__init__},          % Custom highlighting
+emphstyle=\ttb\color{deepred},    % Custom highlighting style
+stringstyle=\color{deepgreen},
+commentstyle=\color{comment},
+frame=tb,                         % Any extra options here
+showstringspaces=false            %
+}
+
+\NewDocumentCommand{\ket}{m}{
+\left|#1\right\rangle
+}
+
+\NewDocumentCommand{\bra}{m}{
+\left\langle#1\right|
+}
+
+\NewDocumentCommand{\braket}{s m o o}{
+  \IfBooleanTF{#1}{
+    \IfValueTF{#3}{
+      \left\langle\left.#2\right|#3\right\rangle
+    }{
+      \left\langle\left.#2\right|#2\right\rangle
+    }
+  }{
+    \IfValueTF{#3}{
+      \IfValueTF{#4}{
+        \left\langle#3\left|#2\right|#4\right\rangle
+      }{
+        \left\langle#3\left|#2\right|#3\right\rangle
+      }
+    }{
+      \left\langle #2\right\rangle
+    }
+  }
+}
+
+%% Comandos para las derivadas ordinarias
+\NewDocumentCommand{\diff}{ s m m o }{
+  \IfBooleanTF{#1}{
+    \IfValueTF{#4}{
+      \frac{d^{#4}#2}{d#3^{#4}}
+    }{
+      \frac{d#2}{d#3}
+    }
+  }{
+    \IfValueTF{#4}{
+      \frac{d^{#4}}{d#3^{#4}} #2
+    }{
+      \frac{d}{d#3} #2
+    }
+  }
+}
+
+
+%% Comandos para las derivadas parciales
+\NewDocumentCommand{\parcial}{ s m m o }{
+  \IfBooleanTF{#1}{
+    \IfValueTF{#4}{
+      \frac{\partial^{#4}}{\partial#3^{#4}} #2
+    }{
+      \frac{\partial}{\partial#3} #2
+    }
+  }{
+    \IfValueTF{#4}{
+      \frac{\partial^{#4}#2}{\partial#3^{#4}}
+    }{
+      \frac{\partial#2}{\partial#3}
+    }
+  }
+}
+
+\pgfplotsset{compat=1.17}
+\usetikzlibrary{calc,patterns,angles,quotes}
+\setlength{\parskip}{2mm}
+
+\title{\textbf{Temas Avanzados de Partículas}}
+\author{Lorena Bucurú Rodriguez}
+
+\begin{document}
+\maketitle
+
+\begin{figure}[ht]
+\begin{subfigure}{.5\textwidth}
+  \centering
+  % include first image
+  \includegraphics[width=.8\linewidth]{Images/MonteCarloBeforeCuts/cutflow_BC_MC.png}
+  \caption{Monte Carlo cutflow before cuts}
+  \label{fig:cutflow_BC_MC}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+  % include second image
+  \includegraphics[width=.8\linewidth]{/Homework/TTBar/Images/BeforeCuts/cutflow_BC.png}
+  \caption{Cutflow before cuts}
+  \label{fig:BeforeCuts/cutflow_BC}
+\end{subfigure}
+\label{fig:first}
+\end{figure}
+
+%\nocite{*}
+%\printbibliography
+
+\end{document}
