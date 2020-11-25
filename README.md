@@ -39,7 +39,7 @@ Welcome to Lorena Bucurú repository, this repo is made-up by two directories, i
   </tr>
   <tr>
     <td>5</td>
-    <td>Z-Prime/td>
+    <td>Z-Prime</td>
     <td>/Homework/Z_prime/Images</td>
     <td>Images</td>
   </tr>
